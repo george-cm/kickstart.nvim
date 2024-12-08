@@ -169,14 +169,21 @@ vim.opt.title = true
 vim.opt.titlestring = [[%t - %{fnamemodify(getcwd(), ':t')}]]
 
 -- Set default terminal shell
-vim.opt.shell = vim.fn.executable 'pwsh' and 'pwsh' or 'powershell'
--- vim.opt.shell = 'pwsh'
-vim.opt.shellcmdflag =
-  '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-vim.opt.shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait'
-vim.opt.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-vim.opt.shellquote = ''
-vim.opt.shellxquote = ''
+local os_string = vim.loop.os_uname().sysname
+if not os_string == 'Linux' then
+  vim.opt.shell = vim.fn.executable 'pwsh' and 'pwsh' or 'powershell'
+  -- vim.opt.shell = 'pwsh'
+  vim.opt.shellcmdflag =
+    '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+  vim.opt.shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait'
+  vim.opt.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  vim.opt.shellquote = ''
+  vim.opt.shellxquote = ''
+  vim.g.python3_host_prog = '~/.venv_nvim/Source/python.exe'
+else
+  vim.opt.shell = os.getenv 'SHELL' or '/usr/bin/env bash'
+  vim.g.python3_host_prog = '~/.venv_nvim/bin/python'
+end
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
