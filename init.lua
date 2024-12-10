@@ -170,7 +170,7 @@ vim.opt.titlestring = [[%t - %{fnamemodify(getcwd(), ':t')}]]
 
 -- Set default terminal shell
 local os_string = vim.loop.os_uname().sysname
-if not os_string == 'Linux' then
+if os_string == 'Windows_NT' then
   vim.opt.shell = vim.fn.executable 'pwsh' and 'pwsh' or 'powershell'
   -- vim.opt.shell = 'pwsh'
   vim.opt.shellcmdflag =
@@ -912,7 +912,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'python', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
